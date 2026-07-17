@@ -1,0 +1,70 @@
+package presentation.controller;
+
+import application.dto.request.CreateRequestCommand;
+import application.dto.request.UpdateRequestExecutorCommand;
+import application.dto.request.UpdateRequestStatusCommand;
+import application.dto.response.RequestResponse;
+import application.dto.response.StatisticsResponse;
+import application.mapper.RequestMapper;
+import application.usecase.*;
+import domain.enums.RequestStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/requests")
+public class RequestController {
+    private final CreateRequestUseCase createRequestUseCase;
+    private final UpdateRequestStatusUseCase updateRequestStatusUseCase;
+    private final UpdateRequestExecutorUseCase updateRequestExecutorUseCase;
+    private final GetRequestsUseCase getRequestsUseCase;
+    private final GetStatisticsUseCase getStatisticsUseCase;
+    private final RequestMapper requestMapper;
+
+    public RequestController(
+            CreateRequestUseCase createRequestUseCase,
+            UpdateRequestStatusUseCase updateRequestStatusUseCase,
+            UpdateRequestExecutorUseCase updateRequestExecutorUseCase,
+            GetRequestsUseCase getRequestsUseCase,
+            GetStatisticsUseCase getStatisticsUseCase,
+            RequestMapper requestMapper) {
+        this.createRequestUseCase = createRequestUseCase;
+        this.updateRequestStatusUseCase = updateRequestStatusUseCase;
+        this.updateRequestExecutorUseCase = updateRequestExecutorUseCase;
+        this.getRequestsUseCase = getRequestsUseCase;
+        this.getStatisticsUseCase = getStatisticsUseCase;
+        this.requestMapper = requestMapper;
+    }
+
+    @PostMapping
+    public RequestResponse create(@RequestBody CreateRequestCommand command) {
+        return requestMapper.toResponse(createRequestUseCase.execute(command));
+    }
+
+    @PatchMapping("/{id}/status")
+    public RequestResponse updateStatus(@PathVariable Long id, @RequestBody UpdateRequestStatusCommand command) {
+        return requestMapper.toResponse(updateRequestStatusUseCase.execute(id, command));
+    }
+
+    @PatchMapping("/{id}/executor")
+    public RequestResponse updateExecutor(@PathVariable Long id, @RequestBody UpdateRequestExecutorCommand command) {
+        return requestMapper.toResponse(updateRequestExecutorUseCase.execute(id, command));
+    }
+
+    @GetMapping
+    public List<RequestResponse> getRequests(
+            @RequestParam(required = false) RequestStatus status,
+            @RequestParam(required = false) Long executorId,
+            @RequestParam(required = false) Long departmentId,
+            @RequestParam(required = false) Boolean overdue
+    ) {
+        return getRequestsUseCase.execute(status, executorId, departmentId, overdue).stream()
+                .map(requestMapper::toResponse).toList();
+    }
+
+    @GetMapping("/statistics")
+    public StatisticsResponse getStatistics() {
+        return getStatisticsUseCase.execute();
+    }
+}
