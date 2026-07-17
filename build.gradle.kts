@@ -15,6 +15,7 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation("org.springframework:spring-context:6.1.5")
     implementation("org.springframework:spring-tx:6.1.5")
+    implementation("org.springframework:spring-web:6.1.5")
 }
 
 tasks.test {
