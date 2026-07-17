@@ -1,10 +1,15 @@
 package domain.repository;
 
 import domain.entity.Request;
+import domain.enums.RequestStatus;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface RequestRepository {
-    Request findById(long id);
+    Optional<Request> findById(Long id);
     Request save(Request request);
-    Request update(Request request);
-    void delete(Request request);
+    void deleteById(Long id);
+    List<Request> findAll();
+    List<Request> findByFilters(RequestStatus status, Long executorId, Long departmentId, Boolean isOverdue);
 }

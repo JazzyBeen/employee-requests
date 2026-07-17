@@ -2,9 +2,12 @@ package domain.repository;
 
 import domain.entity.Department;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface DepartmentRepository {
-    Department findById(long id);
+    Optional<Department> findById(Long id);
     Department save(Department department);
-    Department update(Department department);
-    void delete(Department department);
+    void deleteById(Long id);
+    List<Department> findAll();
 }
