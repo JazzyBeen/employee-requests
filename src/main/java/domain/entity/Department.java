@@ -1,6 +1,11 @@
 package domain.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
+@Getter
 public class Department {
-    Long  id;
-    String name;
+    private Long id;
+    private String name;
 }
