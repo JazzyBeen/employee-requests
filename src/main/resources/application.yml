@@ -1,0 +1,15 @@
+# src/main/resources/application.yml
+spring:
+  datasource:
+    url: jdbc:h2:mem:requestdb
+    username: sa
+    password: password
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+server:
+  port: 8080
