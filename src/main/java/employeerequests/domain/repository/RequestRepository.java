@@ -11,5 +11,5 @@ public interface RequestRepository {
     Request save(Request request);
     void deleteById(Long id);
     List<Request> findAll();
-    List<Request> findByFilters(RequestStatus status, Long executorId, Long departmentId, Boolean isOverdue);
+    List<Request> findByFilters(RequestStatus status, Long executorId, Long departmentId, Boolean isOverdue, String sortBy);
 }

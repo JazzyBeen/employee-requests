@@ -57,9 +57,10 @@ public class RequestController {
             @RequestParam(required = false) RequestStatus status,
             @RequestParam(required = false) Long executorId,
             @RequestParam(required = false) Long departmentId,
-            @RequestParam(required = false) Boolean overdue
+            @RequestParam(required = false) Boolean overdue,
+            @RequestParam(required = false) String sortBy
     ) {
-        return getRequestsUseCase.execute(status, executorId, departmentId, overdue).stream()
+        return getRequestsUseCase.execute(status, executorId, departmentId, overdue, sortBy).stream()
                 .map(requestMapper::toResponse).toList();
     }
 

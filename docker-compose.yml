@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: your_password_here
+      POSTGRES_DB: requestsystem
+    ports:
+      - "5432:5432" # Проброс порта, чтобы вы могли подключаться к БД с компьютера (например, через DBeaver)
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d requestsystem"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: spring_app
+    ports:
+      - "8080:8080"
+    environment:
+      # Переопределяем настройки application.yml через переменные окружения
+      # Обратите внимание: вместо localhost используем имя сервиса БД (db)
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/requestsystem
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: your_password_here
+    depends_on:
+      db:
+        condition: service_healthy # Ждем, пока база данных не будет полностью готова принимать подключения
+    restart: on-failure
+
+volumes:
+  postgres_data: # Сохраняем данные БД даже после удаления контейнеров

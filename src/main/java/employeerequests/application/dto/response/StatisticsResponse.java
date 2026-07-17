@@ -1,5 +1,12 @@
 package employeerequests.application.dto.response;
 
-import java.util.List;
+import employeerequests.domain.enums.RequestStatus;
 
-public record StatisticsResponse(long totalRequests, List<EmployeeStatisticsResponse> topExecutors) {}
+import java.util.List;
+import java.util.Map;
+
+public record StatisticsResponse(
+        Map<RequestStatus, Long> requestsByStatus,
+        long overdueRequestsCount,
+        List<EmployeeStatisticsResponse> completedByExecutor
+) {}

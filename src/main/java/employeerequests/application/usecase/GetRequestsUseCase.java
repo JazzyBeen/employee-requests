@@ -16,7 +16,7 @@ public class GetRequestsUseCase {
         this.requestRepository = requestRepository;
     }
 
-    public List<Request> execute(RequestStatus status, Long executorId, Long departmentId, Boolean isOverdue) {
-        return requestRepository.findByFilters(status, executorId, departmentId, isOverdue);
+    public List<Request> execute(RequestStatus status, Long executorId, Long departmentId, Boolean isOverdue, String sortBy) {
+        return requestRepository.findByFilters(status, executorId, departmentId, isOverdue, sortBy);
     }
 }

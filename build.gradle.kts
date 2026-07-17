@@ -24,7 +24,7 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web:3.2.5")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.2.5")
-    runtimeOnly("com.h2database:h2:2.2.224")
+    runtimeOnly("org.postgresql:postgresql:42.7.3")
 
     implementation("org.liquibase:liquibase-core:4.27.0")
 

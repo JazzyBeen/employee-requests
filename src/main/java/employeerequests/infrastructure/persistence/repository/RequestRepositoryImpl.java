@@ -6,6 +6,7 @@ import employeerequests.domain.repository.RequestRepository;
 import employeerequests.infrastructure.persistence.entity.RequestEntity;
 import employeerequests.infrastructure.persistence.mapper.RequestEntityMapper;
 import employeerequests.infrastructure.persistence.specification.RequestSpecification;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -43,8 +44,12 @@ public class RequestRepositoryImpl implements RequestRepository {
     }
 
     @Override
-    public List<Request> findByFilters(RequestStatus status, Long executorId, Long departmentId, Boolean isOverdue) {
-        return jpaRepository.findAll(RequestSpecification.withFilters(status, executorId, departmentId, isOverdue))
+    public List<Request> findByFilters(RequestStatus status, Long executorId, Long departmentId, Boolean isOverdue, String sortBy) {
+        Sort sort = Sort.unsorted();
+        if (sortBy != null && !sortBy.isEmpty()) {
+            sort = Sort.by(Sort.Direction.ASC, sortBy);
+        }
+        return jpaRepository.findAll(RequestSpecification.withFilters(status, executorId, departmentId, isOverdue), sort)
                 .stream().map(mapper::toDomain).toList();
     }
 }
