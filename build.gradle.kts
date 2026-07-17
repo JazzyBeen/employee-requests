@@ -1,26 +1,41 @@
 plugins {
-    id("java")
+    java
+    id("org.springframework.boot") version "3.2.5"
+    id("io.spring.dependency-management") version "1.1.6"
 }
 
-group = "org.super.tier"
-version = "1.0-SNAPSHOT"
+group = "ru.ptmk"
+version = "0.0.1-SNAPSHOT"
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+}
+
+configurations {
+    compileOnly {
+        extendsFrom(configurations.annotationProcessor.get())
+    }
+}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:6.0.0"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    implementation("org.liquibase:liquibase-core")
-    implementation("org.springframework:spring-context:6.1.5")
-    implementation("org.springframework:spring-tx:6.1.5")
-    implementation("org.springframework:spring-web:6.1.5")
-    implementation("org.springframework.data:spring-data-jpa:3.2.5")
+    implementation("org.springframework.boot:spring-boot-starter-web:3.2.5")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.2.5")
+    runtimeOnly("com.h2database:h2:2.2.224")
 
+    implementation("org.liquibase:liquibase-core:4.27.0")
+
+    compileOnly("org.projectlombok:lombok:1.18.32")
+    annotationProcessor("org.projectlombok:lombok:1.18.32")
+
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test:3.2.5")
 }
 
-tasks.test {
+tasks.withType<Test> {
     useJUnitPlatform()
 }
